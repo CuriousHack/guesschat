@@ -1,11 +1,15 @@
 const authService = require('../services/AuthServices')
+const { generateUsername } = require('../../utils/helpers');
+const { generateUniqueUsername } = require('../services/userServices')
+
 
 const register = async (req, res) => {
-    const {firstname, lastname, email, password} = req.body
+    const {firstname, lastname, email, password} = req.body;
+    const username = await generateUniqueUsername(firstname);
     //register the user and return response
     
     try{
-        const token = await authService.registerUser(firstname, lastname, email, password);
+        const token = await authService.registerUser(firstname, lastname, username, email, password);
         console.log(token)
         res.status(201).json({ success: true, token});
     }
