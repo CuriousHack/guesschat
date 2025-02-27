@@ -1,5 +1,7 @@
 const express = require('express');
-const authController = require('../controllers/AuthControllers')
+const authController = require('../controllers/AuthControllers');
+const {loginSchema, registerSchema} = require('../validation/authValidation');
+const validateRequest = require('../../middleware/validateRequest')
 
 const router = express.Router();
 
@@ -7,7 +9,7 @@ router.get('/', (req, res) => {
     console.log('auth level reached')
 })
 
-router.get('/register', authController.register);
-router.get('/login', authController.login);
+router.post('/register', validateRequest(registerSchema), authController.register);
+router.post('/login', authController.login);
 
 module.exports = router
