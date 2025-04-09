@@ -25,7 +25,7 @@ async function loginUser(event) {
     console.log(loginData)
   
     try {
-        const response = await fetch("http://localhost:3000/auth/login", {
+        const response = await fetch(`${CONFIG.API_URL}auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -53,7 +53,7 @@ async function loginUser(event) {
     const lastname = document.getElementById("lastname-input").value;
     const email = document.getElementById("email-input").value;
     const password = document.getElementById("password-input").value;
-    const repeat_password = document.getElementById("repeat-password-input").value;
+    let repeat_password = document.getElementById("repeat-password-input").value;
   
     const errors = getSignupFormErrors(firstname, lastname, email, password, repeat_password);
   
@@ -64,7 +64,8 @@ async function loginUser(event) {
     }
   
     // Prepare data for sending
-    const registerData = { firstname, lastname, email, password, repeat_password };
+    // repeat_password = "welcomee"
+    const registerData = {firstname, lastname, email, password, repeat_password };
     console.log(registerData)
   
     try {
