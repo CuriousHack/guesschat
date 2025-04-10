@@ -4,7 +4,6 @@
   --line-clr: #42434a;
   --hover-clr: #222533;
   --sidebar-hover-clr: #e6e7ef;
-  /* --hover-clr: #d9dade; */
   --text-clr: #11121a;
   -accent-clr-2: #8672FF;
   --accent-clr: #3f0097;
@@ -68,6 +67,14 @@ body{
   }
 }
 
+#sidebar ul li.active:hover a{
+  color: var(--base-clr);
+
+  svg{
+    fill: var(--base-clr);
+  }
+}
+
 #sidebar a, #sidebar .dropdown-btn, #sidebar .logo{
   border-radius: .5em;
   padding: .85em;
@@ -98,9 +105,11 @@ body{
 #sidebar a:hover, #sidebar .dropdown-btn:hover{
   background-color: var(--hover-clr);
   color: var(--sidebar-hover-clr);
-  /* svg:hover{
-    fill: var(--sidebar-hover-clr);
-  } */
+
+  svg{
+    fill: var(--base-clr);
+  }
+
 }
 #sidebar .sub-menu{
   display: grid;
@@ -149,6 +158,12 @@ main p{
   margin-top: 5px;
   margin-bottom: 15px;
 }
+
+.disabled{
+  display: none !important;
+}
+
+
 .container{
   border: 1px solid var(--line-clr);
   border-radius: 1em;
@@ -159,7 +174,6 @@ main p{
 }
 .inner-container{
   display: grid;
-  /* grid-template-columns: auto; */
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
 }
@@ -182,9 +196,7 @@ main p{
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
 }
-/* .box:hover {
-  transform: scale(1.08);
-} */
+
 .box:nth-child(1){
   background-color: var(--accent-clr)
 }
@@ -260,6 +272,272 @@ main p{
   padding: 10px 30px;
   font-size: 15px;
 }
+
+.create-game{
+  display: flex;
+  align-items: center;
+  background-color: var(--base-clr);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 50%;
+  margin: 10px auto;
+}
+
+.question-box {
+  border: 1px solid var(--accent-clr);
+  border-radius: 20px;
+  padding: 15px;
+  margin: 10px 0;
+  /* display: none; */
+  display: flex;
+  flex-direction: column;
+}
+.question{
+
+  width: 80%;
+  height: 5vh;
+  resize: none;
+  padding: 60px 20px;
+  margin: 20px auto;
+  display: block;
+  color: var(--accent-clr); 
+  border: 1px solid var(--two-accent-clr); 
+  border-radius: 10px;
+
+  text-align: center;
+  font-size: 1.2rem;
+  font-style: italic;
+
+  outline: none;
+  align-items: center;
+
+}
+.question::placeholder {
+  color: #b0aab1;
+  font-style: italic;
+}
+
+.options{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 5px;
+}
+
+.option-input{
+  height: 15vh;
+  outline: none;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--accent-clr); 
+}
+.option-input::placeholder {
+  color: #b0aab1;
+  font-style: italic;
+}
+.option-input:hover{
+  border: 1px solid var(--two-accent-clr);
+}
+
+#correctAnswer{
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--accent-clr);
+  text-transform: uppercase;
+  font-style: italic;
+  color: var(--accent-clr);
+  width: 30%;
+}
+#correctAnswer::placeholder{
+  color: #b0aab1;
+  font-style: italic;
+
+}
+
+.waiting-room {
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+.waiting-room h2 {
+  margin-bottom: 40px;
+  font-size: 24px;
+  color: var(--accent-clr);
+}
+
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  color: var(--base-clr);
+}
+
+.user {
+  padding: 10px 16px;
+  background-color: var(--two-accent-clr);
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+a.extended{
+  width: 50% !important;
+}
+
+a.pulse-button {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  text-decoration: none;
+  padding: 15px 30px;
+  color: #fff;
+  background-color: var(--accent-clr);
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+  box-shadow: var(--two-accent-clr);
+  transition: all 0.3s ease-in-out;
+  animation: pulse 1.5s infinite;
+}
+
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent-clr);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(255, 64, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0);
+  }
+}
+
+.game-head{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  
+  margin-bottom: 10px;
+  color: var(--accent-clr);
+}
+.game-head h2{
+  margin-bottom: 10px;
+}
+/* .game-head#questionCounter{
+  border-bottom: 0;
+  padding: 0;
+} */
+
+.create-div{
+  display: grid;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.create-div button{
+  margin: 20px auto;
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.nav-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+
+
+/* chat interface  */
+.chat-container {
+  border-radius: 10px;
+  padding: 15px;
+  height: 100%;
+}
+
+.message {
+  color: var(--base-clr);
+  display: flex;
+  margin: 10px 0;
+  max-width: 65%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.sent {
+  background-color: var(--accent-clr);
+  float: right;
+  text-align: right;
+}
+
+.received {
+  background-color: var(--line-clr);
+  float: left;
+  text-align: left;
+}
+
+.username {
+  font-weight: light;
+  font-style: oblique;
+  /* display: flex; */
+  background-color: var(--base-clr);
+  color: var(--accent-clr);
+  margin-right: 5px;
+  border-radius: 10px;
+  padding: 2px 5px;
+  float: left;
+  text-align: left;
+}
+
+.chat-log {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-area {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  background-color: var(--accent-clr);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--two-accent-clr);
+}
+
+/* chat interface ends here  */
 
 
 /* media query starts here  */
@@ -351,6 +629,13 @@ main p{
     margin: 5px auto;
     border-radius: 10px;
     padding: 10px 0;
+  }
+
+  .create-game{
+    width: 80%;
+  }
+  a.pulse-button {
+    width: 60%;
   }
   .mobile-bg{
     border: 2px solid var(--line-clr);
