@@ -19,8 +19,9 @@
 
     <script>
         setTimeout(() => {
-            const isAuthenticated = localStorage.getItem("user"); // Simulated auth check
-            window.location.href = isAuthenticated ? "home.html" : "authentication/login.html";
+            //const token = localStorage.getItem("jwt"); // Simulated auth check
+            // window.location.href = token ? "dashboard" : "authentication/login.html";
+            window.location.href = "dashboard"
         }, 5000);
     </script>
 
