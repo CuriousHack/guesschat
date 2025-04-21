@@ -1,47 +1,15 @@
 const form = document.getElementById('form')
-const firstname_input = document.getElementById('firstname-input')
-const lastname_input = document.getElementById('lastname-input')
+const username_input = document.getElementById('username-input')
 const email_input = document.getElementById('email-input')
 const password_input = document.getElementById('password-input')
 const repeat_password_input = document.getElementById('repeat-password-input')
 const error_message = document.getElementById('error-message')
-
-
-// form.addEventListener('submit', (e) => {
-//   let errors = []
-
-//   if(firstname_input){
-//     // If we have a firstname input then we are in the signup
-//     errors = getSignupFormErrors(firstname_input.value, lastname_input.value, email_input.value, password_input.value, repeat_password_input.value)
-//   }
-//   else if(email_input && password_input){
-//     // If we don't have a firstname input then we are in the login
-//     // if we have email input and password input then we are in the login 
-//     errors = getLoginFormErrors(email_input.value, password_input.value)
-//   }
-//   else{
-//     // If we don't have a firstname input then we are in the login
-//     // else we are in the forgot password page 
-//     errors = getForgotPasswordFormErrors(email_input.value)
-//   }
-
-//   if(errors.length > 0){
-//     // If there are any errors
-//     e.preventDefault()
-//     error_message.innerText  = errors.join(". ")
-//   }
-// })
-
-function getSignupFormErrors(firstname, lastname, email, password, repeatPassword){
+function getSignupFormErrors(username, email, password, repeatPassword){
   let errors = []
 
-  if(firstname === '' || firstname == null){
-    errors.push('Firstname is required')
-    firstname_input.parentElement.classList.add('incorrect')
-  }
-  if(lastname === '' || lastname == null){
-    errors.push('Lastname is required')
-    lastname_input.parentElement.classList.add('incorrect')
+  if(username === '' || username == null){
+    errors.push('Username is required')
+    username_input.parentElement.classList.add('incorrect')
   }
   if(email === '' || email == null){
     errors.push('Email is required')
@@ -90,7 +58,7 @@ function getForgotPasswordFormErrors(email){
   return errors;
 }
 
-const allInputs = [firstname_input, email_input, password_input, repeat_password_input].filter(input => input != null)
+const allInputs = [username_input, email_input, password_input, repeat_password_input].filter(input => input != null)
 
 allInputs.forEach(input => {
   input.addEventListener('input', () => {

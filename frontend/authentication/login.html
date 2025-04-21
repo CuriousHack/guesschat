@@ -6,8 +6,8 @@
   <title>Login</title>
   <link rel="stylesheet" href="css/auth.css">
   <script type="text/javascript" src="js/validation.js" defer></script>
-  <script type="text/javascript" src="js/auth.js" defer></script>
   <script type="text/javascript" src="../config.js" defer></script>
+  <script type="text/javascript" src="js/auth.js" defer></script>
 
 </head>
 <body>
@@ -34,6 +34,9 @@
   </div>
 </body>
 <script>
-  
+    const token = localStorage.getItem("jwt"); // Simulated auth check
+    if(token){
+      window.location.href = '../dashboard'
+    }
 </script>
 </html>

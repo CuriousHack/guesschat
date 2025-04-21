@@ -22,7 +22,6 @@ async function loginUser(event) {
   
     // Prepare data for sending
     const loginData = { email, password };
-    console.log(loginData)
   
     try {
         const response = await fetch(`${CONFIG.API_URL}auth/login`, {
@@ -30,14 +29,16 @@ async function loginUser(event) {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(loginData),
         });
   
         const data = await response.json(); // Convert response to JSON
   
         if (response.ok) {
-            console.log("Login successful:", data);
-            // Redirect user or show success message
+            const token = data.token; 
+            localStorage.setItem("jwt", token);
+            window.location.href = '../../dashboard/'
         } else {
             console.log("Login failed:", data.message);
             // Handle login failure (show error message, etc.)
@@ -49,13 +50,12 @@ async function loginUser(event) {
 
   async function registerUser(event) {
     event.preventDefault(); // Prevent form from reloading the page
-    const firstname = document.getElementById("firstname-input").value;
-    const lastname = document.getElementById("lastname-input").value;
+    const username = document.getElementById("username-input").value;
     const email = document.getElementById("email-input").value;
     const password = document.getElementById("password-input").value;
     let repeat_password = document.getElementById("repeat-password-input").value;
   
-    const errors = getSignupFormErrors(firstname, lastname, email, password, repeat_password);
+    const errors = getSignupFormErrors(username, email, password, repeat_password);
   
     if (errors.length > 0) {
         console.log("Validation Errors:", errors);
@@ -64,23 +64,22 @@ async function loginUser(event) {
     }
   
     // Prepare data for sending
-    // repeat_password = "welcomee"
-    const registerData = {firstname, lastname, email, password, repeat_password };
-    console.log(registerData)
+    const registerData = {username, email, password, repeat_password };
   
     try {
         const response = await fetch(`${CONFIG.API_URL}auth/register`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json"},
+            credentials: "include",
             body: JSON.stringify(registerData),
         });
   
         const data = await response.json(); // Convert response to JSON
   
         if (response.ok) {
-            console.log("Registration successful:", data);
+            const token = data.token; 
+            localStorage.setItem("jwt", token);
+            window.location.href = '../../dashboard/'            
             // Redirect user or show success message
         } else {
             console.log("Registration failed:", data.message);
