@@ -3,14 +3,6 @@ const bcrypt = require('bcryptjs')
 
 const Schema = mongoose.Schema
 userSchema = new Schema({
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
-        type: String,
-        required: true
-    },
     username: {
         type: String,
         required: true,
@@ -38,11 +30,8 @@ userSchema.pre(
     }
 );
 
-userSchema.methods.isValidPassword = async function(password) {
-    const user = this;
-    const compare = await bcrypt.compare(password, user.password);
-  
-    return compare;
+userSchema.methods.isValidPassword = async function(password){
+    return await bcrypt.compare(password, this.password);
 }
 
 

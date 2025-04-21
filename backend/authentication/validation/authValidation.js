@@ -1,17 +1,11 @@
 const Joi = require('joi')
 
 const registerSchema = Joi.object({
-    firstname: Joi.string()
+    username: Joi.string()
             .min(2).max(30)
             .required()
             .messages({
-      "any.required": "Firstname is required",
-    }),
-    lastname: Joi.string()
-            .min(2).max(30)
-            .required()
-            .messages({
-      "any.required": "Lastname is required",
+      "any.required": "Username is required",
     }),
     email: Joi.string()
             .email()

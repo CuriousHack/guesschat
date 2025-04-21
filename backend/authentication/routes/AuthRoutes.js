@@ -10,6 +10,6 @@ router.get('/', (req, res) => {
 })
 
 router.post('/register', validateRequest(registerSchema), authController.register);
-router.post('/login', authController.login);
+router.post('/login', validateRequest(loginSchema), authController.login);
 
 module.exports = router
