@@ -31,7 +31,7 @@ function loadGameRoom() {
   socket.emit("startGame", roomId);
 }
 socket.on("gameStarted", (roomId) => {
-  window.location.href = `./game-chat.html?sessionId=${roomId}`;
+  window.location.href = `./game-chat.html?username=${username}&sessionId=${roomId}`;
         // Next phase: move everyone to game.html
 
 })
