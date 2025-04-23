@@ -7,27 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script type="text/javascript" src="js/app.js" defer></script>
   <script src="/socket.io/socket.io.js"></script> 
-  <script src="../index.js"></script>
 </head>
-<style>
-
-
-  .chat-messages {
-    list-style: none;
-    margin: 0;
-    padding: 15px;
-    overflow-y: auto;
-  }
-
-  .chat-messages li {
-    clear: both;
-    margin-bottom: 10px;
-    padding: 10px 15px;
-    max-width: 70%;
-    border-radius: 18px;
-    position: relative;
-  }
-</style>
 <body>
     <nav id="sidebar">
         <ul>
@@ -69,79 +49,25 @@
           </li>
         </ul>
     </nav>
-    <main>
-      <div class="container" id="app">
-        <div class="inner-container">
-          <div class="chat-container">
-           <div>
-             <ul class="chat-messages" id="messages">
-             </ul>
-           </div>
-            <form action="" id="form">
-              <div class="input-area">
-                <input type="text" id="input" autocomplete="off" placeholder="Type a message...">
-                <button>Send</button>
-              </div>
-           </form>
-         </div>
-         
-       </div>
 
+  <main class="" style="max-height: 80vh;" >
+      <div class="messages" id="chat-box">
+       
+        
+    
       </div>
     
-    
-    
+      <div class="input-area">
+        <input type="text" class="myinput" id="user-input" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
 
-<script>
-  const socket = io();
-  // const username = prompt("Enter your name:");
-
-  const form = document.getElementById('form');
-  const input = document.getElementById('input');
-  const messages = document.getElementById('messages');
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('chat message', { user: username, text: input.value });
-      const item = document.createElement('li');
-      
-      item.classList.add('message');
-      item.classList.add('sent');
-      item.textContent = input.value;
-      
-      
-      messages.appendChild(item);
-      input.value = '';
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-  });
-
-  socket.on('chat message', (data) => {
-    const item = document.createElement('li');
-    const span = document.createElement('span');
-    const textNode = document.createTextNode(data.text);
-    if(data.user === username){
-      return
-    }else{
-      item.classList.add('message');
-      item.classList.add('received')
-      
-      span.classList.add('username');
-      span.textContent = data.user;
-      item.appendChild(span);
-      item.appendChild(textNode)
-      messages.appendChild(item);
-      
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-  });
-      function logout() {
-        localStorage.removeItem("jwt");
-        window.location.href = "../authentication/login.html"; // redirect to login page
-}
-  </script>
+  
 
 
+
+
+  
 </main>
 </body> 
+</html>
