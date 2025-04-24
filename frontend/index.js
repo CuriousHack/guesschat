@@ -1,7 +1,7 @@
 const socket = io();
-const urlString = window.location.href; // Get the full current URL
+const urlString = window.location.href;
 const url = new URL(urlString);
-const roomId = url.searchParams.get('code'); // Get the value of the 'code' parameter
+const roomId = url.searchParams.get('code');
 const role = url.searchParams.get('role') ?? "Player";
 const userName = prompt("Enter your username")
 
@@ -52,14 +52,11 @@ socket.on("gameStarted", (roomId) => {
     if (counter <= 0) {
       clearInterval(interval);
       
-      // Step 3: Fetch target page
       fetch("game-chat.html")
         .then(res => res.text())
         .then(html => {
-          // Step 4: Replace body with new page
           document.body.innerHTML = html;
 
-          // Step 5: Manually re-run necessary scripts
           loadChatScript();
         });
     }
@@ -71,6 +68,15 @@ function loadChatScript() {
   const script = document.createElement('script');
   script.src = './js/chat.js'; // Or wherever your chat logic is
   script.defer = true;
+
+  script.onload = () => {
+    startQue(); 
+  };
+
   document.body.appendChild(script);
+}
+
+function startQue(){
+    socket.emit('startQue')
 }
 

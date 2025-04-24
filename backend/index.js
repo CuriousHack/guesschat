@@ -11,6 +11,10 @@ const http = require("http");
 const { generateCode } = require('./utils/helpers');
 const authMiddleware = require('./middleware/authMiddleware');
 let savedQuestions = [];
+const userScores = {};
+let currentQuestionIndex = 0;
+let timer = null;
+let roomCode = "";
 
 
 dotenv.config();
@@ -66,7 +70,9 @@ io.on('connection', (socket) => {
   
     socket.on("joinRoom", ({ roomId, userName, role }) => {
       if (role === "player" && !rooms[roomId]) {
+        userScores[userName] = 0;
         socket.emit("error", "Room not found.");
+        
         return;
       }
     
@@ -87,6 +93,7 @@ io.on('connection', (socket) => {
 
       const host = roomPlayers.find(p => p.socketId === socket.id && p.role === "master");
       if (!host) return;
+      roomCode = roomId;
 
       io.to(roomId).emit("gameStarted", roomId);
     });
@@ -99,7 +106,81 @@ io.on('connection', (socket) => {
         userName
       }
       io.to(roomId).emit("chatMsg", chatData);
+      answer({ roomId, message, userName})
     });
+
+    function answer({roomId, userName, message}){
+      console.log("answer function reached")
+      const current = savedQuestions[currentQuestionIndex];
+      if (!current) return;
+  
+      if (message === current.correctAnswer && !current.answered) {
+        current.answered = true;
+        userScores[userName] += 10;
+        const chatData = {
+          message: `${userName} got it right! +10 points`,
+          userName: "GuessChat"
+        }
+        io.to(roomId).emit("chatMsg", chatData);
+  
+        clearTimeout(timer);
+        setTimeout(() => {
+          nextQuestion();
+        }, 5000);
+      }
+      else{
+        current.answered = false;
+
+        const chatData = {
+          message: `${userName} got it wrong!`,
+          userName: "GuessChat"
+        }
+        io.to(roomId).emit("chatMsg", chatData);
+      }
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex >= savedQuestions.length) {
+        io.to(roomCode).emit("end", userScores);
+        return;
+      }
+    
+      const current = savedQuestions[currentQuestionIndex];
+      current.answered = false;
+    
+      io.to(roomCode).emit("question", {
+        username: "GuessChat",
+        question: current.question,
+        options: current.options
+      });
+    
+      timer = setTimeout(() => {
+        if (!current.answered) {
+          nextQuestion();
+        }
+      }, 10000); // 10 seconds
+    }
+    
+
+    socket.on("startQue", () => {
+      //emit question
+      const current = savedQuestions[currentQuestionIndex];
+        io.to(roomCode).emit("question", {
+          username: "GuessChat",
+          question: current.question,
+          options: current.options
+        });
+        
+        timer = setTimeout(() => {
+          if (!current.answered) {
+            io.to(roomCode).emit("chatMsg", `No correct answer! Correct was ${current.correctAnswer}`);
+            setTimeout(() => {
+              nextQuestion();
+            }, 5000);
+          }
+        }, 30000);
+      }, 1000);
 
     
   
