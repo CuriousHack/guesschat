@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
 
       //perform other actions here
       const chatData = {
-        message,
+        message: message.toUpperCase(),
         userName
       }
       io.to(roomId).emit("chatMsg", chatData);
@@ -110,7 +110,6 @@ io.on('connection', (socket) => {
     });
 
     function answer({roomId, userName, message}){
-      console.log("answer function reached")
       const current = savedQuestions[currentQuestionIndex];
       if (!current) return;
   
@@ -174,7 +173,11 @@ io.on('connection', (socket) => {
         
         timer = setTimeout(() => {
           if (!current.answered) {
-            io.to(roomCode).emit("chatMsg", `No correct answer! Correct was ${current.correctAnswer}`);
+            const chatData = {
+              message: `No correct answer! Correct was ${current.correctAnswer}`,
+              userName: 'GuessChat'
+            }
+            io.to(roomCode).emit("chatMsg", chatData);
             setTimeout(() => {
               nextQuestion();
             }, 5000);

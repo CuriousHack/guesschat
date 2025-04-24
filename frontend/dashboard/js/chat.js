@@ -33,7 +33,7 @@ const appendMessage = (username, msg) => {
 
 
 function sendMessage(){
-    const msg = document.getElementById('user-input').value
+    const msg = document.getElementById('user-input').value;
     if(msg){
         
         socket.emit("gameChat", { roomId, userName, message: msg });

@@ -64,13 +64,15 @@ socket.on("gameStarted", (roomId) => {
 });
 
 function loadChatScript() {
-  console.log(window.location.pathname)
   const script = document.createElement('script');
-  script.src = './js/chat.js'; // Or wherever your chat logic is
+  script.src = './js/chat.js';
   script.defer = true;
 
   script.onload = () => {
-    startQue(); 
+    if(role == 'master'){
+      startQue();  
+    }
+    
   };
 
   document.body.appendChild(script);
