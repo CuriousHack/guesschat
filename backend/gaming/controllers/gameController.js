@@ -2,7 +2,7 @@ const gameService = require('../services/gameServices');
 const state = require('../../models/gameState');
 
 
-exports.handleJoinRoom = (io, socket, { roomId, userName, role }) => {
+const handleJoinRoom = (io, socket, { roomId, userName, role }) => {
   const result = gameService.addPlayer(socket.id, roomId, userName, role);
 
   if (result.error) {
@@ -13,16 +13,12 @@ exports.handleJoinRoom = (io, socket, { roomId, userName, role }) => {
   io.to(roomId).emit('playerListUpdate', result.room);
 };
 
-exports.handleStartQue = (io, socket) => {
-    const {
-      savedQuestions,
-      currentQuestionIndex,
-      roomCode,
-      userScores,
-      rooms,
-    } = require('../../models/gameState');
-
-    console.log(savedQuestions)
+const handleStartQue = (io, socket) => {
+  const {
+    savedQuestions,
+    currentQuestionIndex,
+    roomCode,
+  } = require('../../models/gameState');
   
     const current = savedQuestions[currentQuestionIndex];
   
@@ -47,14 +43,14 @@ exports.handleStartQue = (io, socket) => {
         });
   
         setTimeout(() => {
-          gameController.nextQuestion(io);
+          nextQuestion(io);
         }, 5000);
       }
     }, 30000); // 30 seconds
   };
 
   
-  exports.nextQuestion = (io) => {
+  const nextQuestion = (io) => {
     
     const {
       savedQuestions,
@@ -64,7 +60,7 @@ exports.handleStartQue = (io, socket) => {
   
     state.currentQuestionIndex++;
   
-    if (state.currentQuestionIndex >= savedQuestions.length) {
+    if (state.currentQuestionIndex >= state.savedQuestions.length) {
       io.to(roomCode).emit('end', userScores);
       return;
     }
@@ -81,18 +77,19 @@ exports.handleStartQue = (io, socket) => {
     clearTimeout(state.timer);
     state.timer = setTimeout(() => {
       if (!current.answered) {
-        exports.nextQuestion(io);
+        nextQuestion(io);
       }
     }, 10000);
   };
   
 
-  exports.handleStartGame = (io, socket, roomId) => {
+  const handleStartGame = (io, socket, roomId) => {
     
     const roomPlayers = state.rooms[roomId];
   
     if (!roomPlayers || roomPlayers.length < 3) {
-      io.to(roomId).emit('error', 'At least 3 players required.');
+      io.to(roomId).emit('error', "At least 3 players required.");
+      console.log('3 players required')
       return;
     }
   
@@ -107,7 +104,7 @@ exports.handleStartQue = (io, socket) => {
     io.to(roomId).emit('gameStarted', roomId);
   };
 
-  exports.handleGameChat = (io, roomId, message, userName) => {
+  const handleGameChat = (io, roomId, message, userName) => {
     
   
     // Emit the original chat message (uppercased)
@@ -120,7 +117,7 @@ exports.handleStartQue = (io, socket) => {
     const current = state.savedQuestions[state.currentQuestionIndex];
     if (!current) return;
   
-    if (message === current.correctAnswer && !current.answered) {
+    if (message == current.correctAnswer && !current.answered) {
       current.answered = true;
   
       if (!state.userScores[userName]) {
@@ -135,7 +132,7 @@ exports.handleStartQue = (io, socket) => {
   
       clearTimeout(state.timer);
       setTimeout(() => {
-        exports.nextQuestion(io);
+        nextQuestion(io);
       }, 5000);
     } else if (!current.answered) {
       io.to(roomId).emit('chatMsg', {
@@ -144,4 +141,12 @@ exports.handleStartQue = (io, socket) => {
       });
     }
   };
+
+module.exports = {
+  handleJoinRoom,
+  handleStartQue,
+  nextQuestion,
+  handleStartGame,
+  handleGameChat
+}
   
