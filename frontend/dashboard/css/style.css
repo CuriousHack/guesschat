@@ -629,6 +629,38 @@ button:hover {
   animation: ipulse 1s infinite;
 }
 
+ .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .toast {
+      padding: 12px 20px;
+      margin-top: 10px;
+      border-radius: 4px;
+      min-width: 200px;
+      color: #fff;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+     .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      background-color: var(--accent-clr); /* green */
+    }
+
+    .toast.error {
+      background-color: #F44336; /* red */
+    }
+
 
 @keyframes ipulse {
   0% { box-shadow: 0 0 0 0 var(--accent-clr); }

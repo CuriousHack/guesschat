@@ -45,6 +45,8 @@ socket.on("chatMsg", (data) => {
     appendMessage(data.userName, data.message);
 })
 
+
+
 socket.on("question", (data) => {
     let items = [];
     data.options.forEach((opt, index) => {
@@ -55,3 +57,7 @@ socket.on("question", (data) => {
     appendMessage(data.username, newText);
     items = [];
   });
+
+  socket.on("end", (data) => {
+    alert(JSON.stringify(data, null, 2));
+});

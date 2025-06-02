@@ -31,6 +31,11 @@ function loadGameRoom() {
   socket.emit("startGame", roomId);
 }
 
+//socket error handler
+socket.on("error", (data) => {
+  showToast(data, 'error')  
+})
+
 socket.on("gameStarted", (roomId) => {
   // Step 1: Soft redirect
   history.pushState({}, "", `game-chat.html?username=${userName}&code=${roomId}&role=${role}`);
@@ -82,3 +87,24 @@ function startQue(){
     socket.emit('startQue')
 }
 
+
+function showToast(message, type = 'success', duration = 3000) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      toast.classList.add('toast', type);
+      toast.textContent = message;
+
+      container.appendChild(toast);
+
+      // Trigger the animation
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+
+      // Hide after duration
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
